@@ -6,6 +6,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 import time
 import math
+import os
+
+# 파일 경로를 지금 있는 파일 위치로 변경
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 print("=" * 100)
 print(" 이 크롤러는 RISS 논문 수집용 웹크롤러입니다.")
@@ -17,6 +21,17 @@ name = input('2. 결과를 저장할 파일 명을 쓰세요 : ')
 ft_name = (name+'.txt')
 fc_name = (name+'.csv')
 fx_name = (name+'.xls')
+
+ft_name = (name+'.txt')
+fc_name = (name+'.csv')
+fx_name = (name+'.xls')
+os_name = (os.getcwd()+'\\'+name)
+
+if os.path.exists(os_name) == False:
+    os.mkdir(os_name)
+    os.chdir(os_name)
+else:
+    os.chdir(os_name)
 
 s = Service(
     'C:\\Users\\yzz07\\Desktop\\PROGRAMMING\\22_Hunet study\\Personal practice (Py)\\chromedriver.exe')
