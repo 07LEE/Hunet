@@ -30,7 +30,7 @@ else:
     os.chdir(os_name)
 
 s = Service(
-    'C:\\Users\\yzz07\\Desktop\\PROGRAMMING\\22_Hunet study\\Personal practice (Py)\\chromedriver.exe')
+    'C:\\Users\\yzz07\\Desktop\\PROGRAMMING\\chromedriver.exe')
 driver = webdriver.Chrome(service=s)
 
 url = 'https://www.riss.kr/'
