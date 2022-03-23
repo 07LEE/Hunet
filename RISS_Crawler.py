@@ -12,16 +12,12 @@ import os
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 print("=" * 100)
-print(" 이 크롤러는 RISS 논문 수집용 웹크롤러입니다.")
+print(" 이 크롤러는 RISS 논문 수집용 웹크롤러입니다. 파일을 'txt' 'csv' 'xlx' 형식으로 저장합니다.")
 print("=" * 100)
 
 query_txt = input('1.수집할 자료의 키워드는 무엇입니까? : ')
 
 name = input('2. 결과를 저장할 파일 명을 쓰세요 : ')
-ft_name = (name+'.txt')
-fc_name = (name+'.csv')
-fx_name = (name+'.xls')
-
 ft_name = (name+'.txt')
 fc_name = (name+'.csv')
 fx_name = (name+'.xls')
