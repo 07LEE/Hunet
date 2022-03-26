@@ -107,6 +107,8 @@ for i in range(0, len(img_src2)+1):
         urllib.request.urlretrieve(img_src2[i], str(file_no)+'.jpg')
     except TypeError:
         continue
+    except IndexError:
+        break
 
     time.sleep(1)
     print("%s 번째 이미지 저장중입니다=======" % file_no)

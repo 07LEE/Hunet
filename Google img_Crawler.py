@@ -1,4 +1,4 @@
-
+#%%
 import pandas as pd
 from bs4 import BeautifulSoup
 from pyrsistent import b
@@ -109,6 +109,8 @@ for i in range(2, len(img_src2)+1):
         urllib.request.urlretrieve(img_src2[i], str(file_nom)+'.jpg')
     except TypeError:
         continue
+    except IndexError:
+        break
 
     time.sleep(1)
     file_nom += 1
