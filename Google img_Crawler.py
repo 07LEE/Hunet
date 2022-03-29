@@ -34,7 +34,6 @@ url = 'https://www.google.co.kr/'
 driver.get(url)
 time.sleep(2)
 driver.maximize_window()
-
 search_query = input('검색할 이미지 키워드를 써주세요 : ')
 
 save_name = input('결과를 저장할 파일 명을 쓰세요 : ')
@@ -119,5 +118,3 @@ for i in range(2, len(img_src2)+1):
         break
 
 print('작업이 완료되었습니다.')
-
-driver.close()
