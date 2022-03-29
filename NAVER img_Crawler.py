@@ -1,4 +1,3 @@
-#%%
 import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -119,4 +118,3 @@ for i in range(0, len(img_src2)+1):
 
 time.sleep(0.5)
 print('작업이 완료되었습니다.')
-# %%
