@@ -128,6 +128,9 @@ for i in content:
     if data_url_cnt >= cnt_ytube:
         break
 
+
+#%%
+
 # 데이터 저장
 
 ytb_date = []         # 작성자 닉네임 저장
@@ -137,7 +140,6 @@ ytb_tag = []
 
 f = open(ft_name, 'a', encoding="UTF-8")
 
-#%%
 for i in tqdm(range(len(ytb_url))):
     url_2 = ytb_url[i]
     driver.get(url_2)
@@ -175,7 +177,6 @@ for i in tqdm(range(len(ytb_url))):
     except:
         print("shorts 영상")
 
-#%%
 df = pd.DataFrame()
 df['제목'] = pd.Series(ytb_tit)
 df['주소'] = pd.Series(ytb_url)
@@ -184,4 +185,7 @@ df['내용'] = pd.Series(ytb_body)
 
 df.to_excel(fx_name, index=False, encoding="utf-8", engine='openpyxl')
 df.to_csv(fc_name, index=False, encoding="utf-8-sig")
+
+print('작업이 완료되었습니다.')
+
 # %%

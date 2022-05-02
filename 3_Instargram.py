@@ -47,7 +47,7 @@ fx_name = (time_name + name + '_IS' + '.xls')
 
 # 경로 설정
 username = getpass.getuser()    # getpass 모듈로 username 불러오기
-username = 'yzz07'
+# username = 'yzz07'
 save_location = 'C:\\Users\\' + username + '\\Desktop'
 save_name = save_location + '\\' + 'DATA'
 
@@ -74,7 +74,8 @@ day_end = datetime.datetime.strptime(day_end, format)
 cnt_instar = int(input('해당 기간으로 몇건? : '))
 
 #%%
-s = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
+c_driver = save_location + '\\chromedriver.exe'
+s = Service(c_driver)
 driver = webdriver.Chrome(service=s)
 
 #%% 로그인
@@ -134,6 +135,7 @@ ist_tit = []          # 제목 저장
 ist_body = []         # 내용 저장
 ist_tag = []
 
+driver.switch_to.window(driver.window_handles[0])
 driver.find_element(
     By.XPATH, '//*[@id="react-root"]/section/main/article/div[2]/div/div[1]/div[1]').click()
 
