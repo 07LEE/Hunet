@@ -1,5 +1,6 @@
 # %% NAVER BLOG CRAWLER
 
+from this import d
 import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -106,17 +107,24 @@ if collect_cnt > cnt :
 #%%
 
 data_url = [] 
+pgnum = 1 
 
 while len(data_url) < collect_cnt :
 
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
-    content = soup.find('div', 'content').find_all()
+    content = soup.find('div', 'content').find_all('div', 'list_search_post')
 
     for i in content :
-        data_1 = i.find('a', 'desc_inner')['href']
+        data_1 = i.find('a' , 'desc_inner')['href']
         data_url.append(data_1)
 
+    pgnum += 1
+    if pgnum == '10' :
+        driver.find_element(By.XPATH, '//*[@id="content"]/section/div[3]/a[2]').click()
+    else :
+        driver.find_element(By.XPATH, '//*[@id="content"]/section/div[3]/span[%d]/a' % pgnum).click()
+    
     
 #%%
 # 검색할 정보량 입력
