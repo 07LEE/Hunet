@@ -1,4 +1,4 @@
-# %%
+#%%
 from dataclasses import replace
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -19,12 +19,10 @@ from tqdm.notebook import tqdm
 import win32com.client as win32
 import win32api
 
-
 def scroll_down(driver):
     driver.execute_script("window.scrollBy(0,3000);")
     time.sleep(1)
     driver.execute_script("window.scrollBy(0,3000);")
-
 
 def scroll_up(driver):
     driver.execute_script("window.scrollBy(0,-500);")
@@ -44,7 +42,7 @@ fx_name = (time_name + name + '_YB' + '.xls')
 
 # 저장할 경로 설정 (바탕화면)
 username = getpass.getuser()    # getpass 모듈로 username 불러오기
-username = 'yzz07'
+# username = 'yzz07'
 save_location = 'C:\\Users\\' + username + '\\Desktop'
 save_name = save_location + '\\' + 'DATA'
 
@@ -55,8 +53,8 @@ else:
     os.chdir(save_name)
 
 # 검색할 키워드 설정
-
-s = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
+c_driver = save_location + '\\chromedriver.exe'
+s = Service(c_driver)
 driver = webdriver.Chrome(service=s)
 query_txt = "국내여행"  # 검색할 키워드
 
