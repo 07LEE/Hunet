@@ -26,7 +26,6 @@ def scroll_down(driver):
 
 #%% 저장할 파일명 설정
 
-
 time_local = time.localtime()
 time_name = ('%d.%d.%d_' % (time_local.tm_year,
              time_local.tm_mon, time_local.tm_mday))
@@ -48,8 +47,6 @@ if os.path.exists(save_name) == False:
     os.chdir(save_name)
 else:
     os.chdir(save_name)
-
-#%%
 
 s = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
 driver = webdriver.Chrome(service=s)
@@ -86,8 +83,6 @@ time.sleep(1)
 driver.find_element(
     By.XPATH, '//*[@id="snb"]/div[2]/ul/li[3]/div/div[1]/a[9]').click()
 
-
-#%%
 driver.find_element(
     By.XPATH, '//*[@id="snb"]/div[2]/ul/li[3]/div/div[2]/div[1]/span[1]/a').click()
 driver.find_element(By.LINK_TEXT, '%s' % day_s[0]).click()
@@ -107,7 +102,6 @@ driver.find_element(
 driver.find_element(
     By.XPATH, '//*[@id="snb"]/div[2]/ul/li[3]/div/div[2]/div[3]/button').click()
 
-#%%
 # 검색할 정보량 입력
 collect_cnt = int(input('몇 건의 데이터를 수집하시겠습니까? : '))
 
@@ -153,7 +147,7 @@ naver_body = []         # 게시글 내용 저장
 
 f = open(ft_name, 'a', encoding="UTF-8")
 
-for i in tqdm(range(collect_cnt)):
+for i in tqdm(range(len(data_url))):
     url_2 = data_url[i]
     driver.get(url_2)
     time.sleep(2)
