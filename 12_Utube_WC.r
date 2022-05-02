@@ -1,4 +1,3 @@
-
 setwd("C:/Users/yzz07/Desktop/DATA")
 
 library(KoNLP)
