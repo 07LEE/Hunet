@@ -38,19 +38,21 @@ for (i in 1:cnt_gsub) {
 
 
 # 글자수로 제거
+
 ytube_un <- Filter(function(x) {
     nchar(x) >= 2 & nchar(x) <= 15
 }, ytube_un)
 
 
 # 확인
+
 wordcount <- table(ytube_un)
-head(sort(wordcount, decreasing = T), 100)
+head(sort(wordcount, decreasing = T), 300)
 
 
 ###
 
-wordcount2 <- head(sort(wordcount, decreasing = T), 300)
+wordcount2 <- head(sort(wordcount, decreasing = T), 100)
 palete <- brewer.pal(7, "Set1")
 wordcloud(names(wordcount2),
     freq = wordcount2, scale = c(5, 1), rot.per = 0.25, min.freq = 4,
