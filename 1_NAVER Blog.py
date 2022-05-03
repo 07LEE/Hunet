@@ -139,7 +139,7 @@ for craw_data_1 in content_1:
     else:
         continue
 
-#%% 데이터의 저장
+# 데이터의 저장
 
 naver_tit = []          # 게시글 제목 저장
 naver_date = []

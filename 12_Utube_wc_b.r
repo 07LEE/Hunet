@@ -11,7 +11,7 @@ mergeUserDic(data.frame(readLines("ytube_dic.txt"), "ncn"))
 
 
 # 형태소 분석
-ytube <- readLines("2022.5.1_국내여행_YB.txt", encoding = "UTF-8")
+ytube <- readLines("youtube_b.txt", encoding = "UTF-8")
 head(ytube, 5)
 ytube_2 <- unique(ytube)
 ytube_ext <- extractNoun(ytube_2)
@@ -50,7 +50,7 @@ head(sort(wordcount, decreasing = T), 100)
 
 ###
 
-wordcount2 <- head(sort(wordcount, decreasing = T), 100)
+wordcount2 <- head(sort(wordcount, decreasing = T), 300)
 palete <- brewer.pal(7, "Set1")
 wordcloud(names(wordcount2),
     freq = wordcount2, scale = c(5, 1), rot.per = 0.25, min.freq = 4,
