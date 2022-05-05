@@ -104,6 +104,8 @@ driver.find_element(
 
 # 검색할 정보량 입력
 collect_cnt = int(input('몇 건의 데이터를 수집하시겠습니까? : '))
+if collect_cnt == '' :
+    collect_cnt = 1000
 
 # 네이버에서는 한번에 최대 1000개까지밖에 안됨
 collect_page_cnt = math.ceil(collect_cnt / 1000)

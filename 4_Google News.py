@@ -120,6 +120,7 @@ while collect_cnt > len(google_tit):
         google_tit.append(google_tit_1)
 
         google_body_1 = i.find('div', 'GI74Re nDgy9d').text
+        google_body_1 = google_body_1.replace('\n', '')
         google_body.append(google_body_1)
 
         google_date_1 = i.find('div', 'OSrXXb ZE0LJd').text
