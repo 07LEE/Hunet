@@ -54,7 +54,7 @@ else:
 
 #%%
 
-s = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
+s = Service("C:/Users/yzz07/Desktop/chromedriver.exe")
 driver = webdriver.Chrome(service=s)
 query_txt = "국내여행"  # 검색할 키워드
 
@@ -137,7 +137,12 @@ while collect_cnt > len(google_tit):
         f.write("\n"+"4. 내용 : " + google_body_1)
         f.write("\n")
 
-    driver.find_element(By.XPATH, '//*[@id="pnnext"]/span[2]').click()
+    try :
+        driver.find_element(By.XPATH, '//*[@id="pnnext"]/span[2]').click()
+    except:
+        break
+
+
 
 df = pd.DataFrame()
 df['제목'] = pd.Series(google_tit)
