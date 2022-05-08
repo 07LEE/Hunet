@@ -28,7 +28,6 @@ ytube_un <- gsub("vlog", "브이로그", ytube_un)
 ytube_un <- gsub("Vlog", "브이로그", ytube_un)
 ytube_un <- gsub("들이", "나들이", ytube_un)
 
-
 # 불용어 사전
 txt_gsub <- readLines("GSUB.txt", encoding = "UTF-8")
 (cnt_gsub <- length(txt_gsub))
@@ -36,19 +35,14 @@ for (i in 1:cnt_gsub) {
     ytube_un <- gsub((txt_gsub[i]), "", ytube_un)
 }
 
-
 # 글자수로 제거
 ytube_un <- Filter(function(x) {
     nchar(x) >= 2 & nchar(x) <= 15
 }, ytube_un)
 
-
 # 확인
 wordcount <- table(ytube_un)
 head(sort(wordcount, decreasing = T), 100)
-
-
-###
 
 wordcount2 <- head(sort(wordcount, decreasing = T), 100)
 palete <- brewer.pal(7, "Set1")
@@ -57,6 +51,4 @@ wordcloud(names(wordcount2),
     random.order = F, random.color = T, colors = palete
 )
 
-#
-
-write.table(wordcount2, "뉴스1819wc.txt", fileEncoding = 'UTF-8')
+write.table(wordcount2, "뉴스1819wc.txt", fileEncoding = "UTF-8")

@@ -26,9 +26,10 @@ ytube_un <- gsub("VLOG", "브이로그", ytube_un)
 ytube_un <- gsub("vlog", "브이로그", ytube_un)
 ytube_un <- gsub("Vlog", "브이로그", ytube_un)
 ytube_un <- gsub("들이", "나들이", ytube_un)
+ytube_un <- gsub("나나들이", "나들이", ytube_un)
 
 # 불용어 사전
-txt_gsub <- readLines("ytube_gsub.txt", encoding = "UTF-8")
+txt_gsub <- readLines("GSUB.txt", encoding = "UTF-8")
 (cnt_gsub <- length(txt_gsub))
 for (i in 1:cnt_gsub) {
     ytube_un <- gsub((txt_gsub[i]), "", ytube_un)

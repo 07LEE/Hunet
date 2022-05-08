@@ -30,6 +30,7 @@ ytube_un <- gsub("들이", "나들이", ytube_un)
 ytube_un <- gsub("코로나바이러스", "코로나", ytube_un)
 ytube_un <- gsub("코로나로", "코로나", ytube_un)
 ytube_un <- gsub("감염증코로나", "코로나", ytube_un)
+ytube_un <- gsub("코로나가", "코로나", ytube_un)
 
 # 불용어 사전
 txt_gsub <- readLines("GSUB.txt", encoding = "UTF-8")
@@ -50,10 +51,8 @@ head(sort(wordcount, decreasing = T), 100)
 wordcount2 <- head(sort(wordcount, decreasing = T), 100)
 palete <- brewer.pal(7, "Set1")
 wordcloud(names(wordcount2),
-    freq = wordcount2, scale = c(5, 1), rot.per = 0.25, min.freq = 4,
+    freq = wordcount2, scale = c(5, 0.5), rot.per = 0.25, min.freq = 4,
     random.order = F, random.color = T, colors = palete
 )
 
-#
-
-write.table(wordcount2, "뉴스2021wc.txt", fileEncoding = 'UTF-8')
+write.table(wordcount2, "뉴스2021wc.txt", fileEncoding = "UTF-8")

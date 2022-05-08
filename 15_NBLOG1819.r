@@ -15,7 +15,6 @@ ytube_2 <- unique(ytube)
 ytube_ext <- extractNoun(ytube_2)
 ytube_ext_2 <- lapply(ytube_ext, unique)
 
-
 # 불용어 제거
 cdata <- unlist(ytube_ext_2)
 ytube_un <- str_replace_all(cdata, "[^[:alpha:][:blank:][0-9]]", "")
@@ -27,27 +26,21 @@ ytube_un <- gsub("VLOG", "브이로그", ytube_un)
 ytube_un <- gsub("vlog", "브이로그", ytube_un)
 ytube_un <- gsub("Vlog", "브이로그", ytube_un)
 
-
 # 불용어 사전
-txt_gsub <- readLines("ytube_gsub.txt", encoding = "UTF-8")
+txt_gsub <- readLines("GSUB.txt", encoding = "UTF-8")
 (cnt_gsub <- length(txt_gsub))
 for (i in 1:cnt_gsub) {
     ytube_un <- gsub((txt_gsub[i]), "", ytube_un)
 }
-
 
 # 글자수로 제거
 ytube_un <- Filter(function(x) {
     nchar(x) >= 2 & nchar(x) <= 15
 }, ytube_un)
 
-
 # 확인
 wordcount <- table(ytube_un)
 head(sort(wordcount, decreasing = T), 100)
-
-
-###
 
 wordcount2 <- head(sort(wordcount, decreasing = T), 100)
 palete <- brewer.pal(7, "Set1")
@@ -56,8 +49,4 @@ wordcloud(names(wordcount2),
     random.order = F, random.color = T, colors = palete
 )
 
-#
-
-write.table(wordcount2, "wordcount.txt")
-
-#
+write.table(wordcount2, "WCNBLOG1819.txt", fileEncoding = "UTF-8")
