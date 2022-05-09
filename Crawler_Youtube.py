@@ -42,7 +42,7 @@ fx_name = (time_name + name + '_YB' + '.xls')
 
 # 저장할 경로 설정 (바탕화면)
 username = getpass.getuser()    # getpass 모듈로 username 불러오기
-# username = 'yzz07'
+username = 'yzz07'
 save_location = 'C:\\Users\\' + username + '\\Desktop'
 save_name = save_location + '\\' + 'DATA'
 
@@ -67,9 +67,9 @@ day_start = input('조회 시작일을 입력해주세요 (예 : 2021-01-01) : '
 day_end = input('조회 종료일을 입력해주세요 (예 : 2021-12-31) : ')
 
 if day_start == '':
-    day_start = '2018-01-01'
+    day_start = '2018-06-01'
 if day_end == '':
-    day_end = '2019-12-31'
+    day_end = '2018-12-31'
 
 Yday_start = "after:" + day_start
 Yday_end = "before:" + day_end

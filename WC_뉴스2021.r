@@ -31,6 +31,10 @@ ytube_un <- gsub("코로나바이러스", "코로나", ytube_un)
 ytube_un <- gsub("코로나로", "코로나", ytube_un)
 ytube_un <- gsub("감염증코로나", "코로나", ytube_un)
 ytube_un <- gsub("코로나가", "코로나", ytube_un)
+ytube_un <- gsub("코로나에", "코로나", ytube_un)
+ytube_un <- gsub("코로나으로", "코로나", ytube_un)
+ytube_un <- gsub("이벤", "이벤트", ytube_un)
+
 
 # 불용어 사전
 txt_gsub <- readLines("GSUB.txt", encoding = "UTF-8")
