@@ -1,0 +1,6 @@
+age,workclass,education,educationNumber,maritalStatus,occupation,relationship,race,gender,hourPerWeek,nativeCountry,income
+37, Private, Assoc-acdm,12, Divorced, Tech-support, Not-in-family, White, Female,40, United-States, <=50K
+43, Self-emp-not-inc, Some-college,10, Married-civ-spouse, Craft-repair, Husband, White, Male,50, United-States, <=50K
+32, Private, 10th,6, Married-civ-spouse, Handlers-cleaners, Husband, Amer-Indian-Eskimo, Male,40, United-States, <=50K
+27, Private, Assoc-acdm,12, Married-civ-spouse, Tech-support, Wife, White, Female,38, United-States, <=50K
+52, Self-emp-inc, HS-grad,9, Married-civ-spouse, Exec-managerial, Wife, White, Female,40, United-States, >50K
