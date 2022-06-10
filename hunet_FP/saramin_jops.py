@@ -1,5 +1,4 @@
 # %%
-from cv2 import split
 import pandas as pd
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -10,7 +9,9 @@ from selenium.webdriver.chrome.options import Options
 import time, math, os, random, urllib, urllib.request, getpass, re, datetime
 
 # %%
-Services = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
+username = getpass.getuser()    # getpass 모듈로 username 불러오기
+
+Services = Service("C:/Users/%s/Desktop/chromedriver.exe" %username)
 driver = webdriver.Chrome(service=Services)
 url = 'https://www.saramin.co.kr'
 driver.get(url)
@@ -28,7 +29,7 @@ fx_name = (time_name + name + '.xls')
 
 # 저장할 경로 설정 (바탕화면)
 username = getpass.getuser()    # getpass 모듈로 username 불러오기
-username = 'yzz07'
+# username = 'yzz07'
 save_location = 'C:\\Users\\' + username + '\\Desktop'
 save_name = save_location + '\\' + name
 
@@ -40,8 +41,7 @@ else:
 
 # %%
 
-url = 'https://www.saramin.co.kr/zf_user/jobs/list/job-category?cat_mcls=16&panel_type=&search_optional_item=n&search_done=y&panel_count=y'
-# url = 'https://www.saramin.co.kr/zf_user/jobs/list/job-category?cat_mcls=16%2C14%2C5%2C4%2C15%2C8%2C21%2C18%2C7%2C10%2C11%2C6%2C12%2C22%2C9%2C17%2C20%2C13%2C19%2C3%2C2&panel_type=&search_optional_item=n&search_done=y&panel_count=y'
+url = 'https://www.saramin.co.kr/zf_user/jobs/list/job-category?cat_mcls=10&panel_type=&search_optional_item=n&search_done=y&panel_count=y'
 driver.get(url)
 time.sleep(2)
 
@@ -74,7 +74,6 @@ data_tag = []
 # %%
 sum_count = 0
 page_count = 0
-int_total_count = 3
 
 while True :
 
@@ -84,7 +83,6 @@ while True :
     content = soup.find('div', 'common_recruilt_list').find_all('div', 'list_item')
 
     for content in content :
-        
         data_company_ = content.find('a', 'str_tit').text
         data_company.append(data_company_) # 회사 이름
 
@@ -138,7 +136,7 @@ while True :
             data_job_s += ', '
         data_job.append(data_job_s[:-2])
 
-        data_tag_ = '기획·전략'
+        data_tag_ = '서비스'
         data_tag.append(data_tag_)
 
         sum_count += 1
@@ -171,6 +169,10 @@ df['title'] = pd.Series(data_title)
 df['job'] = pd.Series(data_job)
 df['tag'] = pd.Series(data_tag)
 
+# %%
+df
+
+# %%
 df.to_excel(fx_name, index=False, encoding="utf-8", engine='openpyxl')
 df.to_csv(fc_name, index=False, encoding="utf-8-sig")
 # %%
