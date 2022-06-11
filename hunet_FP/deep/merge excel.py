@@ -4,12 +4,10 @@ import pandas as pd
 import os, datetime, re, getpass
 
 file_format = '.csv' #  .xlsx
-file_path = 'C:\\Users\\yzz07\\Desktop\\git\\Hunet\\hunet_FP\\saramin'
+file_path = 'C:\\Users\\yzz07\\Desktop\\git\\Hunet\\hunet_FP\\data_saramin_head'
 file_list = [f'{file}' for file in os.listdir(file_path) if file_format in file]
 os.chdir(file_path)
-
 merge_df = pd.DataFrame()
-
 for file_name in file_list:
     file_df = pd.read_csv(file_name)
     columns = file_df.columns            
@@ -17,4 +15,10 @@ for file_name in file_list:
         
     merge_df = pd.concat([merge_df, temp_df])
 
+save_path = 'C:\\Users\\yzz07\\Desktop\\git\\Hunet\\hunet_FP\\deep'
+os.chdir(save_path)
 merge_df.to_csv('병합파일.csv',  index=False, encoding="utf-8-sig")
+
+# %%
+merge_df
+# %%
