@@ -9,7 +9,10 @@ from selenium.webdriver.chrome.options import Options
 import time, math, os, random, urllib, urllib.request, getpass, re, datetime
 
 # %%
-Services = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
+username = getpass.getuser()    # getpass 모듈로 username 불러오기
+# username = 'yzz07'
+
+Services = Service('C:/Users/' + username + '/Desktop/chromedriver.exe')
 driver = webdriver.Chrome(service=Services)
 
 name = 'saramin_'  # 저장할 파일명
@@ -17,8 +20,6 @@ time_local = time.localtime()
 time_name = ('%d.%d.%d_' % (time_local.tm_year,
              time_local.tm_mon, time_local.tm_mday))
 
-username = getpass.getuser()    # getpass 모듈로 username 불러오기
-username = 'yzz07'
 save_location = 'C:\\Users\\' + username + '\\Desktop'
 save_name = save_location + '\\' + name
 
