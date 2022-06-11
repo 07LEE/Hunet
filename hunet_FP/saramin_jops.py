@@ -54,8 +54,8 @@ for key, value in dic_category.items():
 
     total_count = soup.find('span', 'total_count').get_text()
     total_count = re.sub('[^0-9]', '', total_count)
-    print('수집하는 카테고리 : ' + cgname)
-    print('수집 가능한 게시물의 갯수 : ' + total_count)
+    print('Categories to collect : ' + cgname)
+    print('Number of posts that can be collected : ' + total_count)
     int_total_count = int(total_count)
 
     data_main = []  # 대분류
@@ -72,6 +72,7 @@ for key, value in dic_category.items():
     sum_count = 0
     page_count = 0
     page_counts = 0
+    
     try:
         while True:
             time.sleep(1)
@@ -158,9 +159,9 @@ for key, value in dic_category.items():
                 By.XPATH, '//*[@id="default_list_wrap"]/div[3]/a[%s]' % page_count).click()
 
     except:
-        print()
+        print('An error occurred during collection.')
 
-    print('sum_count is : ', sum_count)
+    print('Number of collected : ', sum_count)
 
     df = pd.DataFrame()
     df['main'] = pd.Series(data_main)
@@ -180,6 +181,7 @@ for key, value in dic_category.items():
 
     df.to_excel(fx_name, index=False, encoding="utf-8", engine='openpyxl')
     df.to_csv(fc_name, index=False, encoding="utf-8-sig")
+    print('-' * 50)
 
 print('작업이 완료되었습니다.')# %%
 
