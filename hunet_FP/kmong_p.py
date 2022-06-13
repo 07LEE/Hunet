@@ -8,12 +8,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import time, math, os, random, urllib, urllib.request, getpass, re, datetime
 
-def html_num(html_num) :
-    try :
-        re.sub('[^0-9]', '', html_num.text)
-    except :
-        re.sub('[^0-9]', '', html_num)
-
 # %%
 Services = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
 driver = webdriver.Chrome(service=Services)
@@ -21,8 +15,7 @@ today = datetime.datetime.today()
 
 name = 'kmong_p'  # 저장할 폴더명
 time_local = time.localtime()
-time_name = ('%d.%d.%d_' % (time_local.tm_year,
-             time_local.tm_mon, time_local.tm_mday))
+time_name = ('%d.%d.%d_' % (time_local.tm_year, time_local.tm_mon, time_local.tm_mday))
 
 username = getpass.getuser()    # getpass 모듈로 username 불러오기
 username = 'yzz07'
@@ -37,12 +30,15 @@ else:
 
 # %%
 
-dic_category = {1: '디자인', 2: '마케팅', 3: '번역·통역', 4: '문서·글쓰기', 6: 'IT·프로그래밍', 7: '영상·사진·음향', 8: '비즈니스컨설팅',
-                9: '운세', 10: '직무역량', 11: '주문제작', 12: '취업·입시', 13: '투잡·노하우', 14: '세무·법무·노무', 15: '취미', 16: '생활서비스', 17: '심리상담'}
+dic_category = {1: '디자인', 2: '마케팅', 3: '번역·통역', 4: '문서·글쓰기', 6: 'IT·프로그래밍', 7: '영상·사진·음향', 8: '비즈니스컨설팅', 9: '운세', 10: '직무역량', 11: '주문제작', 12: '취업·입시', 13: '투잡·노하우', 14: '세무·법무·노무', 15: '취미', 16: '생활서비스', 17: '심리상담'}
+
+dic_category = {1: '디자인'}
 
 for key, value in dic_category.items() :
     categorys_num = key
     categorys_name = value
+
+    print('Categories to collect : ' + categorys_name)
 
     url = 'https://kmong.com/category/%s?page=1&sort=ranking_points&company=false&is_prime=true&has_portfolio=false&is_contactable=false&is_fast_reaction=false&ratings=&meta=' %key
     driver.get(url)
@@ -66,7 +62,6 @@ for key, value in dic_category.items() :
     soup = BeautifulSoup(html, 'html.parser')
     soups = soup.find('div', 'css-1xaekgw e19f3kve0')
     num = int(soup.find('div', 'css-qzjq2k e19f3kve6').find_all('li','css-w119tg etp7mg1')[-2].text)
-    time.sleep(1)
 
     for j in range(2, num+2):
         html = driver.page_source
@@ -79,8 +74,7 @@ for key, value in dic_category.items() :
             data_url_ = i.find('a', 'css-j9gtx5 eu87mqk0')['href']
             data_url_ = 'https://kmong.com' + data_url_
             data_title_ = i.find('h3', 'css-10894jy eu87mqk7').text
-            data_evaluation_ = i.find('div', 'css-0 eu87mqk15').text
-            data_evaluation_ = html_num(data_evaluation_)
+            data_evaluation_ = re.sub('[^0-9]', '', i.find('div', 'css-0 eu87mqk15').text)
             data_name_ = i.find('span', 'css-3eiwm9 eu87mqk6').text
 
             data_url.append(data_url_)  # URL
@@ -106,19 +100,17 @@ for key, value in dic_category.items() :
         price_2 = content.find('div', 'css-1it4gjn ea0crmh2')
         
         if price_1 :
-            price = content.find('section', 'css-16df71f e12i9j8n0').find_all('div', 'css-d0415h e12i9j8n1')
-            data_STANDARD_ = html_num(price[0])
-            data_DELUXE_ =  html_num(price[1])
-            data_PREMIUM_ = html_num(price[2])
+            data_STANDARD_ = re.sub('[^0-9]', '', content.find('section', 'css-16df71f e12i9j8n0').find_all('div', 'css-d0415h e12i9j8n1')[0].text)
+            data_DELUXE_ = re.sub('[^0-9]', '', content.find('section', 'css-16df71f e12i9j8n0').find_all('div', 'css-d0415h e12i9j8n1')[1].text)
+            data_PREMIUM_ = re.sub('[^0-9]', '', content.find('section', 'css-16df71f e12i9j8n0').find_all('div', 'css-d0415h e12i9j8n1')[2].text)
 
         elif price_2:
-            price = content.find('div', 'css-1it4gjn ea0crmh2')
-            data_STANDARD_ = html_num(price)
+            data_STANDARD_ = re.sub('[^0-9]', '', content.find('div', 'css-1it4gjn ea0crmh2').text)
             data_DELUXE_ =  '가격 없음'
             data_PREMIUM_ = '가격 없음'
 
-        data_wishlist_ = html_num(content.find('section', 'css-29iuxd e1stf3gr4').find('span', 'css-1oteowz eklkj753'))
-        data_operations_ = html_num(content.find('span', 'css-8ioq0m ec3naz84'))
+        data_wishlist_ = re.sub('[^0-9]', '', content.find('section', 'css-29iuxd e1stf3gr4').find('span', 'css-1oteowz eklkj753'))
+        data_operations_ =  re.sub('[^0-9]', '', content.find('span', 'css-8ioq0m ec3naz84'))
 
         data_wishlist.append(data_wishlist_)
         data_STANDARD.append(data_STANDARD_)
@@ -150,6 +142,8 @@ for key, value in dic_category.items() :
 
     df.to_excel(fx_name, index=False, encoding="utf-8", engine='openpyxl')
     df.to_csv(fc_name, index=False, encoding="utf-8-sig")
+
+    print('-' * 50)
 
 print('작업이 완료되었습니다.')
 # %%
