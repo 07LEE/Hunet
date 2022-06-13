@@ -11,7 +11,6 @@ import time, math, os, random, urllib, urllib.request, getpass, re, datetime
 # %%
 username = getpass.getuser()    # getpass 모듈로 username 불러오기
 # username = 'yzz07'
-
 Services = Service('C:/Users/' + username + '/Desktop/chromedriver.exe')
 driver = webdriver.Chrome(service=Services)
 
@@ -184,5 +183,4 @@ for key, value in dic_category.items():
     df.to_csv(fc_name, index=False, encoding="utf-8-sig")
     print('-' * 50)
 
-print('작업이 완료되었습니다.')# %%
-
+print('작업이 완료되었습니다.')

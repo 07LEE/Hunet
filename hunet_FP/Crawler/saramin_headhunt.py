@@ -31,7 +31,6 @@ else:
 today = datetime.datetime.today()
 
 # %%
-
 dic_category = {2: 'IT개발·데이터', 3: '회계·세무·재무', 4: '총무·법무·사무',
                 5: '인사·노무·HRD', 6: '의료', 7: '운전·운송·배송',
                 8: '영업·판매·무역', 9: '연구·R&D', 10: '서비스', 11: '생산',
@@ -69,6 +68,8 @@ for key, value in dic_category.items():
     data_deadline = []  # 마감일
     data_notice = []  # 공고일
 
+    data_url = []
+
     sum_count = 0
     page_count = 0
     page_counts = 0
@@ -77,11 +78,9 @@ for key, value in dic_category.items():
             time.sleep(1)
             html = driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
-            content = soup.find('div', 'common_recruilt_list').find_all(
-                'div', 'list_item')
+            content = soup.find('div', 'common_recruilt_list').find_all('div', 'list_item')
 
             for content in content:
-
                 data_main_ = cgname
                 data_main.append(data_main_)
 
@@ -123,8 +122,7 @@ for key, value in dic_category.items():
                 try:
                     data_deadline_ = content.find('p', 'deadlines').text
                     data_deadline_ = data_deadline_.split('(')
-                    data_deadline_ = datetime.datetime.strptime(
-                        data_deadline_[0], '~ %m/%d')
+                    data_deadline_ = datetime.datetime.strptime(data_deadline_[0], '~ %m/%d')
                     data_deadline.append(
                         data_deadline_.strftime('2022-%m-%d'))  # 마감일
                 except:
@@ -154,8 +152,7 @@ for key, value in dic_category.items():
                 page_count = 2
 
             time.sleep(0.3)
-            driver.find_element(
-                By.XPATH, '//*[@id="default_list_wrap"]/div[3]/a[%s]' % page_count).click()
+            driver.find_element(By.XPATH, '//*[@id="default_list_wrap"]/div[3]/a[%s]' % page_count).click()
 
     except:
         print()
