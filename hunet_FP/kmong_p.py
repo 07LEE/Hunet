@@ -9,7 +9,10 @@ from selenium.webdriver.chrome.options import Options
 import time, math, os, random, urllib, urllib.request, getpass, re, datetime
 
 def html_num(html_num) :
-    return re.sub('[^0-9]', '', html_num.text)
+    try :
+        re.sub('[^0-9]', '', html_num.text)
+    except :
+        re.sub('[^0-9]', '', html_num)
 
 # %%
 Services = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
@@ -33,13 +36,15 @@ else:
     os.chdir(save_name)
 
 # %%
+
 dic_category = {1: '디자인', 2: '마케팅', 3: '번역·통역', 4: '문서·글쓰기', 6: 'IT·프로그래밍', 7: '영상·사진·음향', 8: '비즈니스컨설팅',
                 9: '운세', 10: '직무역량', 11: '주문제작', 12: '취업·입시', 13: '투잡·노하우', 14: '세무·법무·노무', 15: '취미', 16: '생활서비스', 17: '심리상담'}
 
 for key, value in dic_category.items() :
     categorys_num = key
     categorys_name = value
-    url = 'https://kmong.com/category/%s?page=1&sort=ranking_points&company=false&is_prime=true&has_portfolio=false&is_contactable=false&is_fast_reaction=false&ratings=&meta=' %categorys_num
+
+    url = 'https://kmong.com/category/%s?page=1&sort=ranking_points&company=false&is_prime=true&has_portfolio=false&is_contactable=false&is_fast_reaction=false&ratings=&meta=' %key
     driver.get(url)
     time.sleep(2)
 
@@ -56,54 +61,62 @@ for key, value in dic_category.items() :
     data_name = []      # 기업명
     data_url = []       # 링크
 
-    try : 
+
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+    soups = soup.find('div', 'css-1xaekgw e19f3kve0')
+    num = int(soup.find('div', 'css-qzjq2k e19f3kve6').find_all('li','css-w119tg etp7mg1')[-2].text)
+    time.sleep(1)
+
+    for j in range(2, num+2):
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
         soups = soup.find('div', 'css-1xaekgw e19f3kve0')
-        num = soup.find('div', 'css-qzjq2k e19f3kve6').find_all('li','css-w119tg etp7mg1')[-2].text
-        num = int(num)
+        content = soups.find_all('article', 'css-0 e19f3kve2')
+        data_main_ = soup.find('section', 'css-1t1ny2y e11lta390').find_all('a', 'css-mz86x3 e11lta392')[1].text
+        
+        for i in content:
+            data_url_ = i.find('a', 'css-j9gtx5 eu87mqk0')['href']
+            data_url_ = 'https://kmong.com' + data_url_
+            data_title_ = i.find('h3', 'css-10894jy eu87mqk7').text
+            data_evaluation_ = i.find('div', 'css-0 eu87mqk15').text
+            data_evaluation_ = html_num(data_evaluation_)
+            data_name_ = i.find('span', 'css-3eiwm9 eu87mqk6').text
+
+            data_url.append(data_url_)  # URL
+            data_main.append(data_main_)  # 대분류
+            data_title.append(data_title_)  # 제목
+            data_evaluation.append(data_evaluation_)  # 평가 건수
+            data_name.append(data_name_)  # 기업명
+
+        driver.find_element(By.XPATH, '//*[@id="__next"]/div[3]/div/div/main/div/div[2]/div[2]/ul/li[%s]/button/span' %j).click()
         time.sleep(1)
 
-        for j in range(2, num+2):
-            html = driver.page_source
-            soup = BeautifulSoup(html, 'html.parser')
-            soups = soup.find('div', 'css-1xaekgw e19f3kve0')
-            content = soups.find_all('article', 'css-0 e19f3kve2')
-            data_main_ = soup.find('section', 'css-1t1ny2y e11lta390').find_all('a', 'css-mz86x3 e11lta392')[1].text
-            
-            for i in content:
-                data_url_ = i.find('a', 'css-j9gtx5 eu87mqk0')['href']
-                data_url_ = 'https://kmong.com' + data_url_
-                data_title_ = i.find('h3', 'css-10894jy eu87mqk7').text
-                data_evaluation_ = i.find('div', 'css-0 eu87mqk15').text
-                data_evaluation_ = html_num(data_evaluation_)
-                data_name_ = i.find('span', 'css-3eiwm9 eu87mqk6').text
-
-                data_url.append(data_url_)  # URL
-                data_main.append(data_main_)  # 대분류
-                data_title.append(data_title_)  # 제목
-                data_evaluation.append(data_evaluation_)  # 평가 건수
-                data_name.append(data_name_)  # 기업명
-
-            driver.find_element(
-                By.XPATH, '//*[@id="__next"]/div[3]/div/div/main/div/div[2]/div[2]/ul/li[%s]/button/span' % j).click()
-            time.sleep(1)
-
-    except :
-        continue
+    time.sleep(3)
 
     for pages in data_url :
-        url = pages
-        driver.get(url)
+        driver.get(pages)
+        time.sleep(1)
 
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
-        
         content = soup.find('div', 'css-533jkm el1ngz10')
-        price = content.find('section', 'css-16df71f e12i9j8n0').find_all('div', 'css-d0415h e12i9j8n1')
-        data_STANDARD_ = html_num(price[0])
-        data_DELUXE_ =  html_num(price[1])
-        data_PREMIUM_ = html_num(price[2])
+
+        price_1 = content.find('section', 'css-16df71f e12i9j8n0')
+        price_2 = content.find('div', 'css-1it4gjn ea0crmh2')
+        
+        if price_1 :
+            price = content.find('section', 'css-16df71f e12i9j8n0').find_all('div', 'css-d0415h e12i9j8n1')
+            data_STANDARD_ = html_num(price[0])
+            data_DELUXE_ =  html_num(price[1])
+            data_PREMIUM_ = html_num(price[2])
+
+        elif price_2:
+            price = content.find('div', 'css-1it4gjn ea0crmh2')
+            data_STANDARD_ = html_num(price)
+            data_DELUXE_ =  '가격 없음'
+            data_PREMIUM_ = '가격 없음'
+
         data_wishlist_ = html_num(content.find('section', 'css-29iuxd e1stf3gr4').find('span', 'css-1oteowz eklkj753'))
         data_operations_ = html_num(content.find('span', 'css-8ioq0m ec3naz84'))
 
@@ -113,17 +126,21 @@ for key, value in dic_category.items() :
         data_PREMIUM.append(data_PREMIUM_)
         data_operations.append(data_operations_)
 
+
     df = pd.DataFrame()
     df['main'] = pd.Series(data_main)
     df['middle'] = pd.Series(data_middle)
     df['sub'] = pd.Series(data_sub)
+
     df['operations'] = pd.Series(data_operations)
     df['evaluation'] = pd.Series(data_evaluation)
+
     df['STANDARD'] = pd.Series(data_STANDARD)
     df['DELUXE'] = pd.Series(data_DELUXE)
     df['PREMIUM'] = pd.Series(data_PREMIUM)
     df['wishlist'] = pd.Series(data_wishlist)
-    df['operations'] = pd.Series(data_operations_)
+    df['operations'] = pd.Series(data_operations)
+
     df['title'] = pd.Series(data_title)
     df['name'] = pd.Series(data_name)
     df['url'] = pd.Series(data_url)
