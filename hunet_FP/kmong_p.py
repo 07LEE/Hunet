@@ -8,11 +8,15 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import time, math, os, random, urllib, urllib.request, getpass, re, datetime
 
+def html_num(html_num) :
+    return re.sub('[^0-9]', '', html_num.text)
+
 # %%
 Services = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
 driver = webdriver.Chrome(service=Services)
+today = datetime.datetime.today()
 
-name = 'kmong'  # 저장할 파일명
+name = 'kmong_p'  # 저장할 폴더명
 time_local = time.localtime()
 time_name = ('%d.%d.%d_' % (time_local.tm_year,
              time_local.tm_mon, time_local.tm_mday))
@@ -23,79 +27,113 @@ save_location = 'C:\\Users\\' + username + '\\Desktop'
 save_name = save_location + '\\' + name
 
 if os.path.exists(save_name) == False:
-    os.mkdir(save_name) 
+    os.mkdir(save_name)
     os.chdir(save_name)
 else:
     os.chdir(save_name)
 
-today = datetime.datetime.today()
-
-
 # %%
-url = 'https://kmong.com/category/1?page=1&sort=ranking_points&company=false&is_prime=false&has_portfolio=false&is_contactable=false&is_fast_reaction=false&ratings=&meta='
-driver.get(url)
-time.sleep(2)
+dic_category = {1: '디자인', 2: '마케팅', 3: '번역·통역', 4: '문서·글쓰기', 6: 'IT·프로그래밍', 7: '영상·사진·음향', 8: '비즈니스컨설팅',
+                9: '운세', 10: '직무역량', 11: '주문제작', 12: '취업·입시', 13: '투잡·노하우', 14: '세무·법무·노무', 15: '취미', 16: '생활서비스', 17: '심리상담'}
 
-driver.find_element(By.XPATH, '//*[@id="__next"]/div[3]/div/div/main/div/div[1]/div[1]/div/div[1]/label/span/input').click()
-time.sleep(1)
+for key, value in dic_category.items() :
+    categorys_num = key
+    categorys_name = value
+    url = 'https://kmong.com/category/%s?page=1&sort=ranking_points&company=false&is_prime=true&has_portfolio=false&is_contactable=false&is_fast_reaction=false&ratings=&meta=' %categorys_num
+    driver.get(url)
+    time.sleep(2)
 
+    data_main = []      # 대분류
+    data_middle = []    # 중분류
+    data_sub = []       # 소분류
+    data_operations = []    # 작업 횟수
+    data_evaluation = []  # 평가 갯수
+    data_wishlist = []  # 찜
+    data_STANDARD = []  # STANDARD 가격
+    data_DELUXE = []    # DELUXE 가격
+    data_PREMIUM = []   # PREMIUM 가격
+    data_title = []     # 제목
+    data_name = []      # 기업명
+    data_url = []       # 링크
+
+    try : 
+        html = driver.page_source
+        soup = BeautifulSoup(html, 'html.parser')
+        soups = soup.find('div', 'css-1xaekgw e19f3kve0')
+        num = soup.find('div', 'css-qzjq2k e19f3kve6').find_all('li','css-w119tg etp7mg1')[-2].text
+        num = int(num)
+        time.sleep(1)
+
+        for j in range(2, num+2):
+            html = driver.page_source
+            soup = BeautifulSoup(html, 'html.parser')
+            soups = soup.find('div', 'css-1xaekgw e19f3kve0')
+            content = soups.find_all('article', 'css-0 e19f3kve2')
+            data_main_ = soup.find('section', 'css-1t1ny2y e11lta390').find_all('a', 'css-mz86x3 e11lta392')[1].text
+            
+            for i in content:
+                data_url_ = i.find('a', 'css-j9gtx5 eu87mqk0')['href']
+                data_url_ = 'https://kmong.com' + data_url_
+                data_title_ = i.find('h3', 'css-10894jy eu87mqk7').text
+                data_evaluation_ = i.find('div', 'css-0 eu87mqk15').text
+                data_evaluation_ = html_num(data_evaluation_)
+                data_name_ = i.find('span', 'css-3eiwm9 eu87mqk6').text
+
+                data_url.append(data_url_)  # URL
+                data_main.append(data_main_)  # 대분류
+                data_title.append(data_title_)  # 제목
+                data_evaluation.append(data_evaluation_)  # 평가 건수
+                data_name.append(data_name_)  # 기업명
+
+            driver.find_element(
+                By.XPATH, '//*[@id="__next"]/div[3]/div/div/main/div/div[2]/div[2]/ul/li[%s]/button/span' % j).click()
+            time.sleep(1)
+
+    except :
+        continue
+
+    for pages in data_url :
+        url = pages
+        driver.get(url)
+
+        html = driver.page_source
+        soup = BeautifulSoup(html, 'html.parser')
+        
+        content = soup.find('div', 'css-533jkm el1ngz10')
+        price = content.find('section', 'css-16df71f e12i9j8n0').find_all('div', 'css-d0415h e12i9j8n1')
+        data_STANDARD_ = html_num(price[0])
+        data_DELUXE_ =  html_num(price[1])
+        data_PREMIUM_ = html_num(price[2])
+        data_wishlist_ = html_num(content.find('section', 'css-29iuxd e1stf3gr4').find('span', 'css-1oteowz eklkj753'))
+        data_operations_ = html_num(content.find('span', 'css-8ioq0m ec3naz84'))
+
+        data_wishlist.append(data_wishlist_)
+        data_STANDARD.append(data_STANDARD_)
+        data_DELUXE.append(data_DELUXE_)
+        data_PREMIUM.append(data_PREMIUM_)
+        data_operations.append(data_operations_)
+
+    df = pd.DataFrame()
+    df['main'] = pd.Series(data_main)
+    df['middle'] = pd.Series(data_middle)
+    df['sub'] = pd.Series(data_sub)
+    df['operations'] = pd.Series(data_operations)
+    df['evaluation'] = pd.Series(data_evaluation)
+    df['STANDARD'] = pd.Series(data_STANDARD)
+    df['DELUXE'] = pd.Series(data_DELUXE)
+    df['PREMIUM'] = pd.Series(data_PREMIUM)
+    df['wishlist'] = pd.Series(data_wishlist)
+    df['operations'] = pd.Series(data_operations_)
+    df['title'] = pd.Series(data_title)
+    df['name'] = pd.Series(data_name)
+    df['url'] = pd.Series(data_url)
+
+    fc_name = (categorys_name + '_' + time_name + name + '.csv')
+    fx_name = (categorys_name + '_' + time_name + name + '.xls')
+
+    df.to_excel(fx_name, index=False, encoding="utf-8", engine='openpyxl')
+    df.to_csv(fc_name, index=False, encoding="utf-8-sig")
+
+print('작업이 완료되었습니다.')
 # %%
 
-# [크몽 프라임 컬럼]
-# 대분류 / 중분류 / 소분류 / 작업갯수
-# 평가갯수 / 찜갯수
-# STANDARD가격 / DELUXE가격 / PREMIUM가격
-# 제목 / 기업명 / 링크
-
-data_main = []  # 대분류
-data_middle = []  # 중분류
-
-data_type = []  # 고용형태
-data_budget = []  # 예산 
-data_period = []  # 작업기간
-data_proposal = []  # 받은 제안
-
-data_evaluation = [] # 평가 갯수
-data_title = []  # 제목
-data_name = [] # 기업명 
-data_url = []  # 링크 
-
-html = driver.page_source
-soup = BeautifulSoup(html, 'html.parser')
-soups = soup.find('div', 'css-1xaekgw e19f3kve0')
-num = soup.find('div', 'css-qzjq2k e19f3kve6').find_all('li', 'css-w119tg etp7mg1')[-2].text
-num = int(num)
-# %%
-
-for j in range (2, num+2) :
-
-    html = driver.page_source
-    soup = BeautifulSoup(html, 'html.parser')
-    soups = soup.find('div', 'css-1xaekgw e19f3kve0')
-    content = soups.find_all('article', 'css-0 e19f3kve2')
-
-    for i in content :
-        data_url_ = i.find('a', 'css-j9gtx5 eu87mqk0')['href']
-        data_url_ = 'https://kmong.com' + data_url_
-        data_url.append(data_url_) # URL 
-
-        data_title_ = i.find('h3', 'css-10894jy eu87mqk7').text
-        data_title.append(data_title_) # 제목 
-
-        data_evaluation_ = i.find('div', 'css-0 eu87mqk15').text
-        data_evaluation_ = re.sub('[^0-9]', '', data_evaluation_)
-        data_evaluation.append(data_evaluation_) # 평가 건수 
-
-        data_name_ = i.find('span', 'css-3eiwm9 eu87mqk6').text
-        data_name.append(data_name_) # 기업명
-
-    driver.find_element(By.XPATH, '//*[@id="__next"]/div[3]/div/div/main/div/div[2]/div[2]/ul/li[%s]/button/span' %j).click()
-    time.sleep(1)
-
-# %%
-for i in data_url :
-    driver.get(i)
-    time.sleep(0.3)
-
-    break
-# %%
