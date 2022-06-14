@@ -74,7 +74,12 @@ for j in range(1, page_counts + 1) :
         data_budget_ = data_budget_1 + ' '+ data_budget_2
     
         data_period_ = i.find('div','CustomProjectRequestItem__detail-info').find_all('div', 'CustomProjectRequestItem__detail-value')[1].text
-        data_proposal_ = i.find('div','CustomProjectRequestItem__detail-info').find_all('div', 'CustomProjectRequestItem__detail-value')[2].text
+
+        try :
+            data_proposal_ = i.find('div','CustomProjectRequestItem__detail-info').find_all('div', 'CustomProjectRequestItem__detail-value')[2].text
+        except :
+            data_proposal_ = i.find('div','CustomProjectRequestItem__detail-info').find_all('div', 'CustomProjectRequestItem__detail-value')[1].text
+
         data_title_ = i.find('span','CustomProjectRequestItem__title').text
         
         get_url = i.find('a', 'CustomProjectRequestItem')['href'] # url
@@ -89,6 +94,7 @@ for j in range(1, page_counts + 1) :
         data_title.append(data_title_) # 제목
         data_url.append(get_url)
 
+# %%
 df = pd.DataFrame()
 df['main'] = pd.Series(data_main)
 df['middle'] = pd.Series(data_middle)
@@ -99,7 +105,7 @@ df['proposal'] = pd.Series(data_proposal)
 df['title'] = pd.Series(data_title)
 df['url'] = pd.Series(data_url)
 
-fc_name = (time_name + name + '.csv')
+fc_name = (time_name + name + '2.csv')
 fx_name = (time_name + name + '.xlsx')
 
 df.to_csv(fc_name, index=False, encoding="utf-8-sig")
