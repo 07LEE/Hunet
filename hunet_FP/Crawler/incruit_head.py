@@ -29,6 +29,7 @@ if os.path.exists(save_name) == False:
 else:
     os.chdir(save_name)
 
+
 dic_category = {100: '경영·인사·총무·사무', 101: '재무·회계·경리', 102: '마케팅·광고·홍보·조사', 103: '교육·교사·강사·교직원', 104: '디자인', 106: '고객상담·TM ', 107: '건설·건축·토목·환경', 110: '유통·물류·운송·운전', 120: '전자·기계·기술·화학·연구개발', 210: '금융·보험·증권', 190: '의료·간호·보건·복지', 130: '전문직·법률·인문사회·임원', 140: '생산·정비·기능·노무', 170: '서비스·여행·숙박·음식·미용·보안', 150: '무역·영업·판매·매장관리', 160: '인터넷·IT·통신·모바일·게임'}
 
 data_url = []
@@ -68,37 +69,38 @@ df['data_middle'] = pd.Series(data_middle)
 fc_name = (time_name + name + '.csv')
 df.to_csv(fc_name, index=False, encoding="utf-8-sig")
 
-# %%
 nums = 0
+# %%
+data_type = []  # 고용형태
+data_career = []  # 경력
+data_education = []  # 학력
+data_region = []  # 지역
+data_title = []  # 제목
+data_company = []  # 기업 이름
+data_deadline = []  # 마감일
+data_notice = []  # 공고일
+data_size = []
+data_field = []
 
 while True:
     try:
         df = pd.read_csv('%surl.csv' % nums)
         data_url = df['data_url']
+        data_main = df['data_main']
+        data_middle = df['data_middle']
 
     except:
-        data_url = df['data_url']
+        break
 
     print('Number of work to be done : ', len(data_url))
     if len(data_url) == 0:
         break
 
-    data_type = []  # 고용형태
-    data_career = []  # 경력
-    data_education = []  # 학력
-    data_region = []  # 지역
-    data_title = []  # 제목
-    data_company = []  # 기업 이름
-    data_deadline = []  # 마감일
-    data_notice = []  # 공고일
-    data_size = []
-    data_field = []
-
     for i in range(0, len(data_url)):
         url = data_url[i]
+
         try:
-            Services = Service(
-                "C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
+            Services = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
             driver = webdriver.Chrome(service=Services)
             driver.get(url)
             time.sleep(random.uniform(2, 4))
@@ -117,9 +119,23 @@ while True:
             else:
                 ef = pd.DataFrame()
                 ef['data_url'] = data_url[i:]
+                ef['data_main'] = data_main[i:]
+                ef['data_middle'] = data_middle[i:]
+
                 nums += 1
                 ef_name = ('%surl.csv' % nums)
                 ef.to_csv(ef_name, index=False, encoding="utf-8-sig")
+
+                data_type = []  # 고용형태
+                data_career = []  # 경력
+                data_education = []  # 학력
+                data_region = []  # 지역
+                data_title = []  # 제목
+                data_company = []  # 기업 이름
+                data_deadline = []  # 마감일
+                data_notice = []  # 공고일
+                data_size = []
+                data_field = []
                 break
 
         try:
@@ -170,17 +186,19 @@ while True:
             data_size.append(data_size_)
             time.sleep(random.uniform(0.1, 2))
 
-    df['data_type'] = pd.Series(data_type)
-    df['data_career'] = pd.Series(data_career)
-    df['data_education'] = pd.Series(data_education)
-    df['data_region'] = pd.Series(data_region)
-    df['data_title'] = pd.Series(data_title)
-    df['data_company'] = pd.Series(data_company)
-    df['data_deadline'] = pd.Series(data_deadline)
-    df['data_notice'] = pd.Series(data_notice)
-    df['data_size'] = pd.Series(data_size)
+            df['data_type'] = pd.Series(data_type)
+            df['data_career'] = pd.Series(data_career)
+            df['data_education'] = pd.Series(data_education)
+            df['data_region'] = pd.Series(data_region)
+            df['data_title'] = pd.Series(data_title)
+            df['data_company'] = pd.Series(data_company)
+            df['data_deadline'] = pd.Series(data_deadline)
+            df['data_notice'] = pd.Series(data_notice)
+            df['data_size'] = pd.Series(data_size)
 
-    fc_name = (time_name + name + '%s.csv' % nums)
-    df.to_csv(fc_name, index=False, encoding="utf-8-sig")
+            fc_name = (time_name + name + '%s.csv' % nums)
+            df.to_csv(fc_name, index=False, encoding="utf-8-sig")
+
+print('Working is done')
 
 # %%
