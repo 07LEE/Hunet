@@ -7,10 +7,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-import time, math, os, random, urllib, urllib.request, getpass, re, datetime, tqdm
+import time, math, os, random, urllib, urllib.request, getpass, re, datetime
+from tqdm import tqdm
+import chromedriver_autoinstaller
 
-Services = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
-driver = webdriver.Chrome(service=Services)
+chromedriver_autoinstaller.install()
+options = webdriver.ChromeOptions()
+# options.add_argument('headless')
+driver = webdriver.Chrome(options=options)
 today = datetime.datetime.today()
 
 name = 'incruit_head'  # 저장할 폴더명
@@ -29,7 +33,7 @@ if os.path.exists(save_name) == False:
 else:
     os.chdir(save_name)
 
-
+# %%
 dic_category = {100: '경영·인사·총무·사무', 101: '재무·회계·경리', 102: '마케팅·광고·홍보·조사', 103: '교육·교사·강사·교직원', 104: '디자인', 106: '고객상담·TM ', 107: '건설·건축·토목·환경', 110: '유통·물류·운송·운전', 120: '전자·기계·기술·화학·연구개발', 210: '금융·보험·증권', 190: '의료·간호·보건·복지', 130: '전문직·법률·인문사회·임원', 140: '생산·정비·기능·노무', 170: '서비스·여행·숙박·음식·미용·보안', 150: '무역·영업·판매·매장관리', 160: '인터넷·IT·통신·모바일·게임'}
 
 data_url = []
@@ -69,7 +73,8 @@ df['data_middle'] = pd.Series(data_middle)
 fc_name = (time_name + name + '.csv')
 df.to_csv(fc_name, index=False, encoding="utf-8-sig")
 
-nums = 0
+# %%
+nums = 42
 # %%
 data_type = []  # 고용형태
 data_career = []  # 경력
@@ -83,6 +88,7 @@ data_size = []
 data_field = []
 
 while True:
+    
     try:
         df = pd.read_csv('%surl.csv' % nums)
         data_url = df['data_url']
@@ -92,16 +98,18 @@ while True:
     except:
         break
 
-    print('Number of work to be done : ', len(data_url))
+    print('> Number of work to be done : ', len(data_url))
+
     if len(data_url) == 0:
         break
 
-    for i in range(0, len(data_url)):
+    for i in tqdm(range(0, len(data_url))):
         url = data_url[i]
 
         try:
-            Services = Service("C:/Users/yzz07/Desktop/PROGRAMMING/chromedriver.exe")
-            driver = webdriver.Chrome(service=Services)
+            options = webdriver.ChromeOptions()
+            # options.add_argument('headless')
+            driver = webdriver.Chrome(options=options)
             driver.get(url)
             time.sleep(random.uniform(2, 4))
             html = driver.page_source
@@ -109,14 +117,16 @@ while True:
             content = soup.find('div', 'section_view_layout')
 
         except:
-            print('URL where the error occurred : ', url)
-            print('Number of works : ', i)
-            print('-' * 50)
-
             if i == 0:
                 break
 
             else:
+                err_time = time.localtime()
+                print('> URL where the error occurred : ', url)
+                print('> Number of works : ', i)
+                print('> time of error : ', err_time)
+                print('-' * 50)
+
                 ef = pd.DataFrame()
                 ef['data_url'] = data_url[i:]
                 ef['data_main'] = data_main[i:]
