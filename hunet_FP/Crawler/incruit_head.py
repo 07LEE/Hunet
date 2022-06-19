@@ -23,7 +23,6 @@ time_name = ('%d.%d.%d_' % (time_local.tm_year,
              time_local.tm_mon, time_local.tm_mday))
 
 username = getpass.getuser()    # getpass 모듈로 username 불러오기
-username = 'yzz07'
 save_location = 'C:\\Users\\' + username + '\\Desktop'
 save_name = save_location + '\\' + name
 
@@ -74,7 +73,7 @@ fc_name = (time_name + name + '.csv')
 df.to_csv(fc_name, index=False, encoding="utf-8-sig")
 
 # %%
-nums = 42
+nums = 0
 # %%
 data_type = []  # 고용형태
 data_career = []  # 경력
@@ -103,7 +102,7 @@ while True:
     if len(data_url) == 0:
         break
 
-    for i in tqdm(range(0, len(data_url))):
+    for i in range(0, len(data_url)):
         url = data_url[i]
 
         try:
@@ -121,7 +120,7 @@ while True:
                 break
 
             else:
-                err_time = time.localtime()
+                err_time = time.strftime('%c', time.localtime(time.time()))
                 print('> URL where the error occurred : ', url)
                 print('> Number of works : ', i)
                 print('> time of error : ', err_time)
