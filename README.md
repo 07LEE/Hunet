@@ -10,13 +10,13 @@
 </br>
 
 ## Project
-### [Semi Project 1]()
+#### [Semi Project 1]()
 크롤러 만들어 자료 수집
 
-### [Semi Project 2](https://github.com/OrcunLee/Hunet/tree/main/hunet_semi2)
+#### [Semi Project 2](https://github.com/OrcunLee/Hunet/tree/main/hunet_semi2)
 자료 수집 후 Power Bi로 시각화
 
-### [Semi Project 3](https://github.com/OrcunLee/Hunet/tree/main/hunet_semi3)
+#### [Semi Project 3](https://github.com/OrcunLee/Hunet/tree/main/hunet_semi3)
 주가 예측 및 분석
 
 ### Final Project (기업 과제)
