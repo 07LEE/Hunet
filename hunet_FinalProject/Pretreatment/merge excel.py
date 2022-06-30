@@ -5,7 +5,7 @@ import os, datetime, re, getpass
 from tqdm import tqdm
 
 file_format = '.csv' #  .xlsx
-file_path = 'C:\\Users\\yzz07\\Desktop\\git\\deep\\a'
+file_path = 'C:\\Users\\yzz07\\Desktop\\git\\a'
 file_list = [f'{file}' for file in os.listdir(file_path) if file_format in file]
 os.chdir(file_path)
 print(file_list)
@@ -25,7 +25,4 @@ print('-' * 50)
 print(len(merge_df))
 # %%
 merge_df
-
-# %%
-pd.read_csv(file_name[1])
 # %%
