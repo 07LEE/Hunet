@@ -1,6 +1,15 @@
-# Hunet semi project 2
+<h2> Hunet semi project 2 </h2>
 
+`Python, R`
 
+```
 특정 키워드(국내 여행)로 자료를 수집하여 코로나 이전 (2018.01.01 ~ 2019.12.31) 과 코로나 이후 (2020.01.01 ~ 2021.12.31) 사이의 기간으로 구분하여 시각화한다.
+```
 
-Python, R
+```
+Crawling data : 크롤링으로 수집한 자료
+Power BI : Power BI 만들기위한 전처리 작업
+py_Crawler : 자료수집에 이용한 크롤러
+Wordcloud : 워드클라우드를 만들기 위한 자료
+R : 전처리 작업을 진행
+```
