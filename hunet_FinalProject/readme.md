@@ -22,3 +22,8 @@ Preprocessing : 수집한 자료들 전처리에 도움받으려고 만듬
 Excel Data : 수집된 자료들을 전처리 과정을 통해 종합함
 PowerBI : 수집된 자료를 바탕으로 시각화
 ```
+
+```
+TB_1_PPT.pdf : 발표용 PPT
+
+```
