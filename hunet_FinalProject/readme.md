@@ -25,5 +25,5 @@ PowerBI : 수집된 자료를 바탕으로 시각화
 
 ```
 TB_1_PPT.pdf : 발표용 PPT
-TB_2_PB.pdf : 발표 보조용 Power BI
+TB_2_PB.pbix : 발표 보조용 Power BI
 ```
